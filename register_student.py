@@ -1,7 +1,6 @@
 import sqlite3
-import face_recognition
-import pickle
 import os
+import shutil
 
 # Connect to DB
 conn = sqlite3.connect("attendance.db")
@@ -20,16 +19,12 @@ conn.commit()
 # 2. Upload student photo
 photo_name = input(
     "Enter student photo filename (in student_images folder, e.g., student1.jpg): ")
-image_path = os.path.join("student_images", photo_name)
-image = face_recognition.load_image_file(image_path)
-face_encoding = face_recognition.face_encodings(image)[0]
+source_path = os.path.join("student_images", photo_name)
 
-# 3. Convert encoding to binary and save
-encoded_face = pickle.dumps(face_encoding)
-cur.execute("INSERT INTO face_data (student_id, encoding) VALUES (?,?)",
-            (student_id, encoded_face))
-conn.commit()
+# Optional: copy photo to a separate folder with student ID as name
+dest_path = os.path.join("student_images", f"{student_id}.jpg")
+shutil.copyfile(source_path, dest_path)
 
+print(f"✅ Student {name} registered with ID {student_id}!")
 cur.close()
 conn.close()
-print(f"✅ Student {name} registered successfully!")
