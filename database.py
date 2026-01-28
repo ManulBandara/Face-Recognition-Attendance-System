@@ -13,14 +13,6 @@ CREATE TABLE IF NOT EXISTS students (
 )
 """)
 
-# Face encodings table
-cur.execute("""
-CREATE TABLE IF NOT EXISTS face_data (
-    student_id INTEGER,
-    encoding BLOB
-)
-""")
-
 # Attendance table
 cur.execute("""
 CREATE TABLE IF NOT EXISTS attendance (
@@ -33,4 +25,4 @@ CREATE TABLE IF NOT EXISTS attendance (
 
 conn.commit()
 conn.close()
-print("Database and tables created successfully!")
+print("Database created successfully!")
